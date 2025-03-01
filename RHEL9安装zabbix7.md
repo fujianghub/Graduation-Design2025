@@ -4,7 +4,7 @@
 
 [](https://www.zabbix.com/cn/download?zabbix=7.0&os_distribution=red_hat_enterprise_linux&os_version=9&components=server_frontend_agent&db=mysql&ws=nginx)
 
-![image-20250302030315136](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250302030315136.png)
+![image](https://github.com/user-attachments/assets/92cd90fd-5069-4f4d-a09e-02303890a816)
 
 ---
 
@@ -150,5 +150,5 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
    ```
 
    最后成功！
+   ![image](https://github.com/user-attachments/assets/ff523b11-2d31-4c93-acb2-d9f8c0e1e268)
 
-![image-20250302035245581](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250302035245581.png)
