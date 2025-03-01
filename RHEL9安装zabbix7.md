@@ -1,4 +1,4 @@
-### RHEL9安装zabbix7
+## RHEL9安装zabbix7
 
 ✅**链接参考**
 
@@ -8,7 +8,7 @@
 
 ---
 
-✅**前置准备**
+#### ✅**前置准备**
 
 - 安装数据库：
 
@@ -31,7 +31,7 @@ SELINUX=disable
 
 ---
 
-✅**安装步骤：**
+#### ✅**安装步骤：**
 
 1. 安装
 
@@ -88,7 +88,7 @@ http://zabbix7.feng.org/
 
 ---
 
-✅**修正字体乱码：**
+#### ✅**修正字体乱码：**
 
 ```bash
 [root@zabbix yum.repos.d]# cd  /usr/share/zabbix/assets/fonts/
@@ -102,7 +102,7 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
 
 ---
 
-✅**问题记录**：
+#### ✅**问题记录**：
 
 ```bash
 ❌#问题：安装zabbix PHP gd 扩展不支持(PHP配置参数--with-gd).
@@ -151,4 +151,41 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
 
    最后成功！
    ![image](https://github.com/user-attachments/assets/ff523b11-2d31-4c93-acb2-d9f8c0e1e268)
+
+   #### ✅数据库迁移到新主机：
+
+   ```sql
+   #旧服务器主机
+   systemctl stop zabbix-server.service 
+   mkdir /data
+   mysqldump -uroot -A -F --single-transaction > /data/all.sql
+   systemctl disable --now mysqld
+   scp /data/all.sql root@172.16.12.73:/opt
+   
+   #新主机
+   yum install -y mysql-server
+   systemctl start mysqld.service 
+   systemctl enable mysqld.service 
+   mysql < /opt/all.sql
+   create user zabbix@'172.16.12.%' identified by '123456';
+   grant all privileges on zabbix.* to zabbix@'172.16.12.%';
+   ```
+
+   ```bash
+   #旧主机
+   vim /etc/zabbix/web/zabbix.conf.php
+   $DB['SERVER']			= '172.16.12.73';
+   
+   [root@zabbix ~]# vim /etc/zabbix/zabbix_server.conf 
+   [root@zabbix ~]# grep ^DB /etc/zabbix/zabbix_server.conf
+   DBHost=172.16.12.73
+   DBName=zabbix
+   DBUser=zabbix
+   DBPassword=123456
+   DBPort=3306
+   
+   systemctl start zabbix-server.service
+   ```
+
+
 
