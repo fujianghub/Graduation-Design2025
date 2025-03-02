@@ -186,6 +186,22 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
    
    systemctl start zabbix-server.service
    ```
+---
+## RHEL9安装zabbix-agent2
+
+链接：[](https://www.zabbix.com/cn/download?zabbix=7.0&os_distribution=red_hat_enterprise_linux&os_version=9&components=agent_2&db=&ws=)
+
+```bash
+# rpm -Uvh https://repo.zabbix.com/zabbix/7.0/rhel/9/x86_64/zabbix-release-latest-7.0.el9.noarch.rpm
+# dnf clean all
+# dnf install -y zabbix-agent2
+# dnf install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
+# vim /etc/zabbix/zabbix_agent2.conf
+	Server=172.16.12.70
+# systemctl restart zabbix-agent2
+# systemctl enable zabbix-agent2
+```
+
 
 
 
