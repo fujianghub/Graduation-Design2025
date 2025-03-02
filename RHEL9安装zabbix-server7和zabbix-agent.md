@@ -1,4 +1,4 @@
-## RHEL9安装zabbix7
+## 💡RHEL9安装zabbix7
 
 ✅**链接参考**
 
@@ -187,7 +187,7 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
    systemctl start zabbix-server.service
    ```
 ---
-## RHEL9安装zabbix-agent2
+## 💡RHEL9安装zabbix-agent2
 
 链接：[](https://www.zabbix.com/cn/download?zabbix=7.0&os_distribution=red_hat_enterprise_linux&os_version=9&components=agent_2&db=&ws=)
 
