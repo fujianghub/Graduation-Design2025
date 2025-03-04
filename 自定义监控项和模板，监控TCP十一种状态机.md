@@ -22,10 +22,9 @@
 
 8. 主机上关联模板
 
-客户端：
+1. ✅Zabbix Agent定义监控项
 
 ```bash
-1.Zabbix Agent定义监控项
 vim /etc/zabbix/zabbix_agent2.d/Test.conf
 #UserParameter=<key>,<shell command>
 #写法一：每一个监控项都单独写
@@ -45,7 +44,7 @@ netstat -nat|awk -v STATE=$1 '$NF ~ STATE{state[$NF]++}END{for(i in state){print
 chmod a+x tcp_state.sh 
 ```
 
-2. 测试
+2. ✅测试
 
 ```bash
 ①在Zabbix Agent 上执行测试
@@ -61,6 +60,6 @@ zabbix_get -s 172.16.12.73 -p 10050 -k "tcp_state[ESTABLISHED]"
 
 
 
-3. 模板的创建和添加（一个一个添加）
+3. ✅模板的创建和添加（一个一个添加）
 
 ![image](https://github.com/user-attachments/assets/542f44b1-00f5-4281-bc2d-8a0ea5fdb59f)
