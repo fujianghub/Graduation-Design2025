@@ -11,15 +11,16 @@ vim /etc/nginx/nginx.conf
         }
 systemctl enable --now nginx
 ```
+![image](https://github.com/user-attachments/assets/2689f466-1d04-49b7-82d8-dfa3e002bb04)
 
-![image-20250304094325422](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250304094325422.png)
-
-![image-20250304091122386](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250304091122386.png)
+![image](https://github.com/user-attachments/assets/a2bb2d18-ddd9-460b-8b65-3ffcd1c1ad0e)
 
 **web访问测试：**
+![image](https://github.com/user-attachments/assets/ca1f4b17-b5c3-4c81-8e42-e4cc814388d7)
 
-![image-20250304094726307](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250304094726307.png)
 
 #### ✅Zabbix添加nginx模板
 
-![image-20250304095625188](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250304095625188.png)
+![image](https://github.com/user-attachments/assets/3a77d4e1-718f-4c4d-9cfa-ad500dd19c89)
+#### ✅可以单独针对某个设备定义宏
+![image](https://github.com/user-attachments/assets/49c521e3-8b7c-436c-8ce6-fd1c640408c7)
