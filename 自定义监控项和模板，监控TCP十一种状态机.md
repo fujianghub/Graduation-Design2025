@@ -163,5 +163,6 @@ zabbix_export:
           name: 'TCP UNKNOWN'
           key: 'tcp_state[UNKNOWN]'
           delay: '30'
-
 ```
+![image](https://github.com/user-attachments/assets/8ec9ddd1-cd18-4aa0-90da-3c5830b060b7)
+
