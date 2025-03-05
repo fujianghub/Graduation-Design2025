@@ -22,7 +22,7 @@
 
 8. 主机上关联模板
 ---
-**💡配置样例：监控TCP十一种状态机**
+#### **💡配置样例：监控TCP十一种状态机**
 
 1. ✅Zabbix Agent定义监控项
 
@@ -101,8 +101,67 @@ UserParameter=tcp_state[*],sudo /etc/zabbix/zabbix_agentd.conf2.d/tcp_state.sh $
 ```
 
 
-
-
 3. ✅模板的创建和添加（一个一个添加）
 
 ![image](https://github.com/user-attachments/assets/542f44b1-00f5-4281-bc2d-8a0ea5fdb59f)
+#### **💡导出模板**
+```yaml
+zabbix_export:
+  version: '6.0'
+  date: '2025-03-05T02:08:56Z'
+  groups:
+    - uuid: dc579cd7a1a34222933f24f52a68bcd8
+      name: 'Linux servers'
+  templates:
+    - uuid: 6b06e53f978b41beb3a49a772db1289c
+      template: TCP-Status
+      name: TCP-Status
+      groups:
+        - name: 'Linux servers'
+      items:
+        - uuid: 374aedeeefe3451db335e76fca221930
+          name: 'TCP CLOSE_WAIT'
+          key: 'tcp_state[CLOSE_WAIT]'
+          delay: '30'
+        - uuid: 843b3519904740f0b04ff2ac032334ae
+          name: 'TCP CLOSING'
+          key: 'tcp_state[CLOSING]'
+          delay: '30'
+        - uuid: d17fdd85f6954b168bad3c81ae8854c5
+          name: 'TCP ESTABLISHED'
+          key: 'tcp_state[ESTABLISHED]'
+          delay: '30'
+        - uuid: 68b3b146b894495eab0d9849feb9509c
+          name: 'TCP FIN_WAIT1'
+          key: 'tcp_state[FIN_WAIT1]'
+          delay: '30'
+        - uuid: a619f4cd40db446dabd314d45462ba5c
+          name: 'TCP FIN_WAIT2'
+          key: 'tcp_state[FIN_WAIT2]'
+          delay: '30'
+        - uuid: de5b5f73ecb44322b1d743d2e90456d2
+          name: 'TCP LAST_ACK'
+          key: 'tcp_state[LAST_ACK]'
+          delay: '30'
+        - uuid: 948838a852e44f8490be3a06d443d635
+          name: 'TCP LISTEN'
+          key: 'tcp_state[LISTEN]'
+          delay: '30'
+        - uuid: 4013c0ec33c84d2bbbb29b59d8dbd3a9
+          name: 'TCP SYN_RECV'
+          key: 'tcp_state[SYN_RECV]'
+          delay: '30'
+        - uuid: 0feb79afc75945ceac77da9c3434c985
+          name: 'TCP SYN_SENT'
+          key: 'tcp_state[SYN_SENT]'
+          delay: '30'
+        - uuid: ed2ff7cbfa7a4b9aac290b1cbd23f777
+          name: 'TCP TIME_WAIT'
+          key: 'tcp_state[TIME_WAIT]'
+          delay: '30'
+        - uuid: 658e53859d384a4fa9b273c1b0323fed
+          name: 'TCP UNKNOWN'
+          key: 'tcp_state[UNKNOWN]'
+          delay: '30'
+
+```
