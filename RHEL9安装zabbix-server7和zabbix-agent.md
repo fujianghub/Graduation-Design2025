@@ -45,7 +45,7 @@ SELINUX=disable
 # mysql -uroot -p
 password
 mysql> create database zabbix character set utf8mb4 collate utf8mb4_bin;
-mysql> create user zabbix@localhost identified by 'password';
+mysql> create user zabbix@localhost identified by '123456';
 mysql> grant all privileges on zabbix.* to zabbix@localhost;
 mysql> set global log_bin_trust_function_creators = 1;
 mysql> quit;
@@ -62,7 +62,7 @@ mysql> quit;
 
 ```bash
 #vim /etc/zabbix/zabbix_server.conf
-DBPassword=password
+DBPassword=123456
 [root@zabbix yum.repos.d]# grep -E '^DB|DBHost=' /etc/zabbix/zabbix_server.conf
 # DBHost=localhost
 DBName=zabbix
@@ -74,6 +74,10 @@ DBPassword=123456
 #vim /etc/nginx/conf.d/zabbix.conf
 listen          80;
 server_name     zabbix7.feng.org;
+```
+```bash
+# systemctl restart zabbix-server zabbix-agent2 nginx php-fpm
+# systemctl enable zabbix-server zabbix-agent2 nginx php-fpm
 ```
 
 3. web访问继续配置
