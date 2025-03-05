@@ -60,6 +60,47 @@ zabbix_agent2 -t tcp_state[ESTABLISHED]
 zabbix_get -s 172.16.12.73 -p 10050 -k "tcp_state[ESTABLISHED]"
 ```
 
+- ✏️注意
+
+```bash'
+如果不让文件tcp_state.sh 拥有所有权限，也就是不执行chmod a+x tcp_state.sh ，只是执行chmod u+x tcp_state.sh的话，
+那么服务端测试会出现下列现象：权限拒绝，因为zabbix-server默认使用的用户是zabbix
+[root@zabbix ~]# zabbix_get -s 172.16.12.73 -p 10050 -k "tcp_state[ESTABLISHED]"
+sh: line 1: /etc/zabbix/zabbix_agent2.d/tcp_state.sh: Permission denied
+
+解决方案：方式一
+#注：此方式在zabbix-agent2上失败，zabbix-agent2也没有AllowRoot选项
+vim /lib/systemd/system/zabbix-agentd.service
+    #注释默认的用户和组
+    #User=zabbix
+    #Group=zabbix
+vim /etc/zabbix/zabbix_agentd.conf
+	AllowRoot=1
+systemctl daemon-reload
+systemctl restart zabbix-agentd.service
+ps -aux | grep zabbix
+
+解决方案：方式二，sudo授权(推荐)
+vim /etc/sudoers
+zabbix ALL=(ALL) NOPASSWD: ALL
+vim /etc/zabbix/zabbix_agent2.d/Test.conf
+UserParameter=tcp_state[*],sudo /etc/zabbix/zabbix_agentd.conf2.d/tcp_state.sh $1
+#测试：zabbix_get -s 172.16.12.73 -p 10050 -k "tcp_state[ESTABLISHED]"
+```
+
+```bash
+## 选项：AllowRoot
+#    允许代理以 'root' 身份运行。如果禁用并且代理由 'root' 启动，代理将尝试切换到由User配置选项指定的用户。
+#    如果在普通用户下启动，则没有效果。
+#    0 - 不允许
+#    1 - 允许
+#
+# 必需：否
+# 默认值：
+# AllowRoot=0
+```
+
+
 
 
 3. ✅模板的创建和添加（一个一个添加）
