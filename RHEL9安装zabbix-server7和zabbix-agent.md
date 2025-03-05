@@ -111,6 +111,7 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
 ```bash
 ❌#问题：安装zabbix PHP gd 扩展不支持(PHP配置参数--with-gd).
 ```
+![image](https://github.com/user-attachments/assets/93789776-8792-4314-8a9d-f4a92a741bfd)
 
 解决：默认安装的php版本8.0.30的gd没有加载出来(版本过旧/依赖不兼容），升级php版本
 
@@ -154,7 +155,9 @@ Alibaba-PuHuiTi-Medium.ttf  graphfont.ttf.bak
    ```
 
    最后成功！
-   ![image](https://github.com/user-attachments/assets/ff523b11-2d31-4c93-acb2-d9f8c0e1e268)
+   ![image](https://github.com/user-attachments/assets/fd3c41af-0d09-435a-b2ca-c358dafb2827)
+
+  
 
    #### ✅数据库迁移到新主机：
 
