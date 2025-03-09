@@ -24,14 +24,12 @@ use_boot                                      [s|26]
 ```
 
 添加自定义监控项到自定义模板
-
-![image-20250306075719173](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250306075719173.png)
+![image-20250306075719173](https://github.com/user-attachments/assets/52db7fcd-183e-4ec3-a91a-e0bf25563951)
 
 添加触发器
+![image-20250306080131841](https://github.com/user-attachments/assets/4877d8e4-8c83-4899-b31b-0e0e0fdc56b0)
 
-![image-20250306080131841](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250306080131841.png)
-
-![image-20250306080645001](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250306080645001.png)
+![image-20250306080645001](https://github.com/user-attachments/assets/3de9d775-b029-41c7-8fd5-87c4d53784b7)
 
 ```bash
 #压力测试
