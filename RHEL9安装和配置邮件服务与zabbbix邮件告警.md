@@ -32,13 +32,13 @@ smtp_tls_wrappermode = yes
 
 #创建发件人地址映射文件
 vim /etc/postfix/generic
-@zabbix.com 2111320204@tjgydx.wecom.work
+@zabbix.com xxxxxxx@tjgydx.wecom.work
 #生成数据库文件：
 postmap /etc/postfix/generic
 # -------------------------------------------------------------------------------
 #创建 SMTP 认证密码文件
 vim /etc/postfix/sasl_passwd
-[smtp.exmail.qq.com]:465 2111320204@tjgydx.wecom.work:z6pSQWQBhgDiG2Dc
+[smtp.exmail.qq.com]:465 xxxxxxx@tjgydx.wecom.work:aaaaaa
 #设置权限并生成数据库
 chmod 600 /etc/postfix/sasl_passwd
 postmap /etc/postfix/sasl_passwd
@@ -60,5 +60,5 @@ echo "Test Email Body" | mail -s "Test Email from RHEL9" fujiang0225@163.com
 ```bash
 #注意：此处使用个人微信似乎有bug，只能使用企业微信
 ```
+![image-20250309235356981](https://github.com/user-attachments/assets/ea91e622-25b4-4a8e-b93b-5f225fca0a39)
 
-![image-20250309235356981](C:\Users\冯富江\AppData\Roaming\Typora\typora-user-images\image-20250309235356981.png)
