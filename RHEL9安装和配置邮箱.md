@@ -47,7 +47,7 @@ postmap /etc/postfix/sasl_passwd
 
 ```bash
 #测试
-echo "Test Email Body" | mail -s "Test Email from RHEL9" fujiang0225@163.com
-#备选测试方法：echo "Subject: Test Email" | sendmail fujiang0225@163.com
+echo "Test Email Body" | mail -s "Test Email from RHEL9" AAAAAA@163.com
+#备选测试方法：echo "Subject: Test Email" | sendmail AAAAAA@163.com
 ```
 
