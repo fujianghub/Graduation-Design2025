@@ -1,0 +1,13 @@
+[BaseOS]
+name=rhel9_BasePS
+baseurl=file:///mnt/BaseOS
+enabled=1
+gpgcheck=1
+gpgkey=file:///mnt/RPM-GPG-KEY-redhat-release
+
+[AppStream]
+name=rhel9_AppStream
+baseurl=file:///mnt/AppStream
+enabled=1
+gpgcheck=1
+gpgkey=file:///mnt/RPM-GPG-KEY-redhat-release
