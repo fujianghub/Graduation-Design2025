@@ -7,13 +7,13 @@
     report_filename: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}-{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}-inspection_report.txt"
     report_path: "{{ report_dir }}/{{ report_filename }}"
     # 邮件配置（需要根据实际情况修改）
-    mail_from: "2111320204@tjgydx.wecom.work"           # 发件邮箱
-    mail_to: "fujiang0225@aliyun.com"               # 收件邮箱
+    mail_from: "sssssssss"           # 发件邮箱
+    mail_to: "ddddddddd"               # 收件邮箱
     mail_subject: "服务器巡检报告 - {{ ansible_hostname }} ({{ ansible_default_ipv4.address }})"
     mail_server: "smtp.exmail.qq.com"            # SMTP服务器地址
     mail_port: 465                                 # SMTP端口
-    mail_username: "2111320204@tjgydx.wecom.work"                     # SMTP认证用户名
-    mail_password: "z6pSQWQBhgDiG2Dc"                 # SMTP认证密码
+    mail_username: "sssssssssss"                     # SMTP认证用户名
+    mail_password: "xxxxxx"                 # SMTP认证密码
     mail_tls: yes 
   
   tasks:
