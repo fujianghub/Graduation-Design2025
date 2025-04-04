@@ -1,0 +1,153 @@
+---
+- name: Linux Server巡检
+  hosts: all
+  become: yes
+  vars:
+    report_dir: "/opt/inspection_report/"
+    report_filename: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}-{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}-inspection_report.txt"
+    report_path: "{{ report_dir }}/{{ report_filename }}"
+    # 邮件配置（需要根据实际情况修改）
+    mail_from: "2111320204@tjgydx.wecom.work"           # 发件邮箱
+    mail_to: "fujiang0225@aliyun.com"               # 收件邮箱
+    mail_subject: "服务器巡检报告 - {{ ansible_hostname }} ({{ ansible_default_ipv4.address }})"
+    mail_server: "smtp.exmail.qq.com"            # SMTP服务器地址
+    mail_port: 465                                 # SMTP端口
+    mail_username: "2111320204@tjgydx.wecom.work"                     # SMTP认证用户名
+    mail_password: "z6pSQWQBhgDiG2Dc"                 # SMTP认证密码
+    mail_tls: yes 
+  
+  tasks:
+    - name: 确保报告目录存在
+      file:
+        path: "{{ report_dir }}"
+        state: directory
+        mode: 0755
+      delegate_to: localhost
+
+    - name: 收集基础信息
+      block:
+        - name: 获取系统信息
+          shell: |
+              echo "----------------- 设备基本信息 ---------------------"
+              echo "系统版本: $(cat /etc/os-release | grep PRETTY_NAME | cut -d= -f2 | tr -d '\"')"
+              echo "内核版本: $(uname -r)"
+              echo "主机名: $(hostname)"
+          register: sys_info
+
+        - name: 获取网络信息
+          shell: |
+              echo "----------------- 网络信息 -------------------------"
+              echo "IP地址信息:"
+              ip -4 addr show | grep -w inet | awk '{print "  " $2 " on " $NF}'
+              echo "网关: $(ip route show default | awk '/default/ {print $3}')"
+              echo "DNS配置: $(grep nameserver /etc/resolv.conf | awk '{print $2}')"
+              echo "路由表:"
+              ip route | sed 's/^/  /'
+              echo "开放端口:"
+              ss -tuln | sed 's/^/  /'
+          register: net_info
+
+
+        - name: 获取性能信息
+          shell: |
+              echo "===== 性能检查 ====="
+              
+              # 提取系统平均负载
+              load_avg=$(top -b -n1 | grep 'load average' | awk -F'load average: ' '{print $2}')
+              load_1=$(echo "$load_avg" | awk -F',' '{print $1}')
+              load_5=$(echo "$load_avg" | awk -F',' '{print $2}')
+              load_15=$(echo "$load_avg" | awk -F',' '{print $3}')
+              echo "系统负载(1/5/15分钟): ${load_1}, ${load_5}, ${load_15}"
+
+              # 提取CPU信息
+              echo "CPU核数: $(nproc)"
+              cpu_line=$(top -b -n1 | grep '%Cpu(s)')
+              cpu_idle=$(echo "$cpu_line" | awk -F',' '{ for(i=1;i<=NF;i++){ if ($i ~ /id/) {gsub(/[^0-9.]/,"",$i); print $i; exit} } }')
+              cpu_usage=$(echo "100 - $cpu_idle" | bc -l | xargs printf "%.1f%%")
+              cpu_wa=$(echo "$cpu_line" | awk -F',' '{ for(i=1;i<=NF;i++){ if ($i ~ /wa/) {gsub(/[^0-9.]/,"",$i); print $i; exit} } }')%
+              echo "CPU使用率: $cpu_usage (IO等待: $cpu_wa)"
+
+              # 提取内存信息
+              mem_line=$(top -b -n1 | grep 'MiB Mem')
+              mem_total=$(echo "$mem_line" | awk '{print $4}')
+              mem_used=$(echo "$mem_line" | awk '{print $8}')
+              mem_usage=$(echo "scale=2; $mem_used / $mem_total * 100" | bc -l | xargs printf "%.1f%%")
+              echo "内存总量: ${mem_total} MiB"
+              echo "内存使用率: $mem_usage"
+
+              # 提取Swap信息
+              swap_line=$(top -b -n1 | grep 'MiB Swap')
+              swap_total=$(echo "$swap_line" | awk '{print $3}')
+              swap_used=$(echo "$swap_line" | awk '{print $7}' | tr -d '.')
+              if [ "$swap_total" = "0" ] || [ -z "$swap_total" ]; then
+                  swap_usage="0.0%"
+              else
+                  swap_usage=$(echo "scale=2; $swap_used / $swap_total * 100" | bc -l | xargs printf "%.1f%%")
+              fi
+              echo "Swap总量: ${swap_total} MiB"
+              echo "Swap使用率: $swap_usage"
+
+              echo "磁盘使用:"
+              df -h | sed 's/^/  /'
+          register: perf_info
+        - name: 获取安全信息
+          shell: |
+              echo "----------------- 安全检查 -------------------------"
+              echo "当前登录用户:"
+              who | sed 's/^/  /'
+              echo "最近重启记录:"
+              last reboot | head -n5 | sed 's/^/  /'
+              echo "系统运行时间: $(uptime -p)"
+              echo "僵尸进程检查:"
+              ps aux | awk '$8=="Z" {print $0}' | sed 's/^/  /'
+              if [ $(ps aux | awk '$8=="Z"' | wc -l) -eq 0 ]; then
+                echo "  未发现僵尸进程"
+              fi
+          register: sec_info
+
+      rescue:
+        - name: 错误处理
+          ansible.builtin.debug:
+            msg: "巡检过程中发生错误！"
+
+    - name: 生成报告文件
+      ansible.builtin.copy:
+        dest: "{{ report_path }}"
+        content: |
+          {{ sys_info.stdout }}
+          
+          {{ net_info.stdout }}
+          
+          {{ perf_info.stdout }}
+          
+          {{ sec_info.stdout }}
+        mode: 0644
+      delegate_to: localhost
+    - name: 发送邮件报告
+      delegate_to: localhost
+      community.general.mail:
+        host: "{{ mail_server }}"
+        port: "{{ mail_port }}"
+        username: "{{ mail_username }}"
+        password: "{{ mail_password }}"
+        to: "{{ mail_to }}"
+        from: "{{ mail_from }}"
+        subject: "{{ mail_subject }}"
+        body: |
+          服务器巡检已完成，详情请查看附件。
+          
+          基本信息：
+          - 主机名: {{ ansible_hostname }}
+          - IP地址: {{ ansible_default_ipv4.address }}
+          - 检查时间: {{ lookup('pipe', 'date +"%Y-%m-%d %H:%M:%S"') }}
+          - 报告路径: {{ report_path }}
+        attach: 
+          - "{{ report_path }}"
+        secure: starttls
+      when: report_path is exists
+      tags:
+        - mail
+
+    - name: 显示报告摘要
+      ansible.builtin.debug:
+        msg: "巡检完成，完整报告已保存至 {{ report_path }}"
