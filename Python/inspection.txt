@@ -1,0 +1,27 @@
+display ip interface brief
+display lldp nei br
+display lldp nei
+display arp
+display mac-address
+display version
+display interface brief
+display vlan
+display port vlan active
+display port vlan
+display interface
+display ip routing-table
+display current-configuration
+display device
+display cpu-usage
+display stack
+display mad verbose
+display memory-usage
+display power system
+display alarm urgent
+display startup
+display temperature all
+display logbuffer
+display log
+display clock
+display counters
+display counters rate

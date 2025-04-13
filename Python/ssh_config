@@ -1,0 +1,4 @@
+Host *
+  KexAlgorithms diffie-hellman-group-exchange-sha1
+  Ciphers aes128-cbc,aes192-cbc,aes256-cbc
+  MACs hmac-sha1

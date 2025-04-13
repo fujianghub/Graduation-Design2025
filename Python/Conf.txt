@@ -1,0 +1,3 @@
+snmp-agent community read HQ@2025
+lldp enable
+quit
